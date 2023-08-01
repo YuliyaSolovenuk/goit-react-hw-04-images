@@ -11,18 +11,18 @@ export function Modal({ largeImageUrl, tags, onRequestClose }) {
     }
   };
 
-  const handleKeyDown = event => {
-    if (event.code === 'Escape') {
-      onRequestClose();
-    }
-  };
-
   useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.code === 'Escape') {
+        onRequestClose();
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  });
+  }, [onRequestClose]);
 
   return createPortal(
     <div className={css.overlay} onClick={handleBackdropClick}>
@@ -34,42 +34,6 @@ export function Modal({ largeImageUrl, tags, onRequestClose }) {
     document.getElementById('modal-root')
   );
 }
-
-// export class Modal extends Component {
-//   componentDidMount() {
-//     window.addEventListener('keydown', this.handleKeyDown);
-//   }
-
-//   componentWillUnmount() {
-//     window.removeEventListener('keydown', this.handleKeyDown);
-//   }
-
-//   handleBackdropClick = event => {
-//     if (event.currentTarget === event.target) {
-//       this.props.onRequestClose();
-//     }
-//   };
-
-//   handleKeyDown = event => {
-//     if (event.code === 'Escape') {
-//       this.props.onRequestClose();
-//     }
-//   };
-
-//   render() {
-//     const { largeImageUrl, tags } = this.props;
-
-//     return createPortal(
-//       <div className={css.overlay} onClick={this.handleBackdropClick}>
-//         <div className={css.modal}>
-//           <img src={largeImageUrl} alt={tags} />
-//         </div>
-//       </div>,
-
-//       document.getElementById('modal-root')
-//     );
-//   }
-// }
 
 Modal.propTypes = {
   tags: PropTypes.string,
