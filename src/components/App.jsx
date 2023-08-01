@@ -10,7 +10,6 @@ import { Loader } from './loader/Loader';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-
 export function App() {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
@@ -26,7 +25,7 @@ export function App() {
     }
     fetchImageByQuery();
   }, [query, page]);
-
+  
   const fetchImageByQuery = async () => {
     try {
       setIsLoading(true);
@@ -46,7 +45,7 @@ export function App() {
         );
       }
 
-      setArrayImages(prevArrayImages => [...prevArrayImages, ...data.hits]);
+      setArrayImages(prevArrayImgs =>[...prevArrayImgs, ...data.hits]);
       setTotalPage(totalPage);
     } catch (error) {
       console.error(error);
@@ -58,7 +57,7 @@ export function App() {
   const handleFormSubmit = querySearch => {
     if (query === querySearch) {
       toast.warning(
-        'Please enter a new keyword to search. The result of this query is displayed.'
+        'Please enter a new keyword to search.The result of this query is displayed.'
       );
       return;
     }
@@ -71,10 +70,8 @@ export function App() {
   const loadNextPage = () => {
     setPage(prevPage => prevPage + 1);
   };
-  console.log('arrayImages.length', arrayImages.length);
-  console.log('perPage',perPage);
-  console.log('page', page);
-  console.log('totalPage', totalPage);
+
+
   return (
     <div className={css.App}>
       <Searchbar onSubmit={handleFormSubmit} />
@@ -94,103 +91,14 @@ export function App() {
         </p>
       )}
 
-      {page < totalPage && arrayImages.length > 0 && 
-        (<Button loadMore={loadNextPage} />)
-      }
+      {arrayImages.length > 0 &&
+         page < totalPage  && 
+          (<Button loadMore={loadNextPage} />)}
 
       <ToastContainer autoClose={3000} />
     </div>
   );
 }
-
-// export function App() {
-//   const [query, setQuery] = useState('');
-//   const [page, setPage] = useState(1);
-//   const [arrayImages, setArrayImages] = useState([]);
-//   const [totalPage, setTotalPage] = useState(0);
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   const perPage = 12;
-
-//   useEffect(() => {
-//     if (query !== '') {
-//       fetchImageByQuery();
-//     }
-//   }, [query, page]);
-  
-//   const fetchImageByQuery = async () => {
-//     try {
-//       setIsLoading(true);
-
-//       const { data } = await PixabayAPI(query, page);
-
-//       if (data.hits.length === 0) {
-//         toast.warning(
-//           'Sorry, there are no images matching your search query. Please try again.'
-//         );
-//         return;
-//       }
-//       const totalPage = Math.ceil(data.totalHits / perPage);
-//       if (page === totalPage && page !== 1) {
-//         toast.warning(
-//           "We're sorry, but you've reached the end of search results!"
-//         );
-//       }
-
-//       setArrayImages(prevArrayImgs =>[...prevArrayImgs, ...data.hits]);
-//       setTotalPage(totalPage);
-//     } catch (error) {
-//       console.error(error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   const handleFormSubmit = querySearch => {
-//     if (query === querySearch) {
-//       toast.warning(
-//         'Please enter a new keyword to search.The result of this query is displayed.'
-//       );
-//       return;
-//     }
-
-//     setQuery(querySearch);
-//     setPage(1);
-//     setArrayImages([]);
-//   };
-
-//   const loadNextPage = () => {
-//     setPage(prevPage => prevPage + 1);
-//   };
-
-
-//   return (
-//     <div className={css.App}>
-//       <Searchbar onSubmit={handleFormSubmit} />
-//       {isLoading && <Loader />}
-
-//       {arrayImages.length ? (
-//         <ImageGallery arrayImages={arrayImages} />
-//       ) : (
-//         <p
-//           style={{
-//             padding: 100,
-//             textAlign: 'center',
-//             fontSize: 30,
-//           }}
-//         >
-//           Hello :-) Enter a query to search for pictures!
-//         </p>
-//       )}
-
-//       {arrayImages.length > perPage ||
-//          page < totalPage  ? 
-//           <Button loadMore={loadNextPage} /> : null}
-
-//       <ToastContainer autoClose={3000} />
-//     </div>
-//   );
-// }
 
 // export class App extends Component {
 //   state = {
